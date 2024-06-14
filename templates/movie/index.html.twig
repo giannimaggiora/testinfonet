@@ -1,13 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Movies{% endblock %}
+
 {% block body %}
     <h1>Movies</h1>
-    <ul>
+    <ul class="list-group mt-3">
         {% for movie in movies %}
-            <li>
-                <a href="{{ path('movie_show', {id: movie.id}) }}">{{ movie.name }}</a>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="ml-3">
+                            <a href="{{ path('movie_show', {id: movie.id}) }}">{{ movie.name }}</a>
+                    </div>
+                </div>
             </li>
         {% endfor %}
     </ul>
 {% endblock %}
-

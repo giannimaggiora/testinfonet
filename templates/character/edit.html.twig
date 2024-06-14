@@ -3,9 +3,43 @@
 {% block title %}Edit Character{% endblock %}
 
 {% block body %}
-    <h1>Edit Character</h1>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-success">Save</button>
-    {{ form_end(form) }}
+    <div class="container mt-5">
+        <h1 class="mb-4">Edit Character</h1>
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.name, 'Name') }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.mass, 'Mass') }}
+            {{ form_widget(form.mass, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.mass) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.height, 'Height') }}
+            {{ form_widget(form.height, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.height) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.gender, 'Gender') }}
+            {{ form_widget(form.gender, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.gender) }}
+        </div>
+        <div class="form-group">
+            <label>Picture</label><br>
+            {% if character.picture %}
+                <img src="{{ asset('uploads/pictures/' ~ character.picture) }}" alt="{{ character.name }}" class="img-thumbnail mb-2" width="100" height="100"><br>
+                <button type="submit" formnovalidate formaction="{{ path('character_remove_picture', {id: character.id}) }}" class="btn btn-warning btn-sm mb-2">Remove</button>
+            {% else %}
+                <p>No picture uploaded</p>
+            {% endif %}
+            {{ form_widget(form.picture, {'attr': {'class': 'form-control-file'}}) }}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a href="{{ path('character_delete', {id: character.id}) }}" class="btn btn-danger">Delete</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
