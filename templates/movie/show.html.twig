@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ movie.name }}</h1>
+    <ul>
+        {% for character in characters %}
+            <li>
+                <img src="{{ asset('uploads/pictures/' ~ character.picture) }}" alt="{{ character.character.name }}" style="width: 100px;">
+                {{ character.character.name }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Characters{% endblock %}
+
+{% block body %}
+    <h1>Characters</h1>
+    <ul>
+        {% for character in characters %}
+            <li>
+                {{ character.name }}
+                <a href="{{ path('character_edit', {id: character.id}) }}">Edit</a>
+                <form method="post" action="{{ path('character_delete', {id: character.id}) }}" style="display:inline-block;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ character.id) }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
