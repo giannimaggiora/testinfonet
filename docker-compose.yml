@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  postgres2:
+    image: postgres:latest
+    container_name: postgres2
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  pgadmin2:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres2
+
+  symfony:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: symfony
+    environment:
+      DATABASE_URL: postgres://admin:admin@postgres2:5432/mydatabase
+      APP_ENV: dev
+      APP_DEBUG: 1
+      PHP_IDE_CONFIG: serverName=xdebug-docker
+      DISPLAY: host.docker.internal:0
+    volumes:
+      - ./infonet-starwars:/var/www/html
+    ports:
+      - "9000:9000"
+    depends_on:
+      - postgres2
+
+volumes:
+  postgres_data:
+

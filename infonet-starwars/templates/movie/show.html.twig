@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .deleted-cell {
+            background-color: rgba(255, 0, 0, 0.1); /* Fondo rojo tenue */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">{{ movie.name }}</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Mass</th>
+                <th scope="col">Height</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Picture</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for character in characters %}
+                <tr data-toggle="collapse" data-target="#details-{{ loop.index }}" class="accordion-toggle">
+                    <td class="{% if character.character.deletedAt is not null %}deleted-cell{% endif %}">
+                        {% if character.character.deletedAt is not null %}
+                            <del>{{ character.character.name }}</del>
+                        {% else %}
+                            {{ character.character.name }}
+                        {% endif %}
+                    </td>
+                    <td class="{% if character.character.deletedAt is not null %}deleted-cell{% endif %}">
+                        {% if character.character.deletedAt is not null %}
+                            <del>{{ character.character.mass }}</del>
+                        {% else %}
+                            {{ character.character.mass }}
+                        {% endif %}
+                    </td>
+                    <td class="{% if character.character.deletedAt is not null %}deleted-cell{% endif %}">
+                        {% if character.character.deletedAt is not null %}
+                            <del>{{ character.character.height }}</del>
+                        {% else %}
+                            {{ character.character.height }}
+                        {% endif %}
+                    </td>
+                    <td class="{% if character.character.deletedAt is not null %}deleted-cell{% endif %}">
+                        {% if character.character.deletedAt is not null %}
+                            <del>{{ character.character.gender }}</del>
+                        {% else %}
+                            {{ character.character.gender }}
+                        {% endif %}
+                    </td>
+                    <td class="{% if character.character.deletedAt is not null %}deleted-cell{% endif %}">
+                        {% if character.character.picture %}
+                            <img src="{{ asset('uploads/pictures/' ~ character.character.picture) }}" alt="{{ character.character.name }}" class="img-thumbnail" width="100" height="100">
+                        {% else %}
+                            <p>No picture uploaded</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="hiddenRow">
+                        <div class="accordian-body collapse p-3" id="details-{{ loop.index }}">
+                            <p><strong>Name:</strong>
+                                {% if character.character.deletedAt is not null %}
+                                    <del>{{ character.character.name }}</del>
+                                {% else %}
+                                    {{ character.character.name }}
+                                {% endif %}
+                            </p>
+                            <p><strong>Mass:</strong>
+                                {% if character.character.deletedAt is not null %}
+                                    <del>{{ character.character.mass }}</del>
+                                {% else %}
+                                    {{ character.character.mass }}
+                                {% endif %}
+                            </p>
+                            <p><strong>Height:</strong>
+                                {% if character.character.deletedAt is not null %}
+                                    <del>{{ character.character.height }}</del>
+                                {% else %}
+                                    {{ character.character.height }}
+                                {% endif %}
+                            </p>
+                            <p><strong>Gender:</strong>
+                                {% if character.character.deletedAt is not null %}
+                                    <del>{{ character.character.gender }}</del>
+                                {% else %}
+                                    {{ character.character.gender }}
+                                {% endif %}
+                            </p>
+                            {% if character.character.picture %}
+                                <img src="{{ asset('uploads/pictures/' ~ character.character.picture) }}" alt="{{ character.character.name }}" class="img-thumbnail" width="100" height="100">
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
