@@ -66,18 +66,6 @@ ENV DATABASE_URL="postgresql://admin:admin@postgres2:5432/mydatabase"
 # Install Symfony PHP framework dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Configure Xdebug in php.ini
-#RUN echo "[xdebug]" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.discover_client_host=true" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.max_nesting_level=10000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-#    && echo "xdebug.connect_timeout_ms=2000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
 # Change current user to www-data
 RUN chown -R www-data:www-data /var/www/html
 
@@ -87,12 +75,8 @@ EXPOSE 9000
 # Run Symfony commands to setup the database and start the server
 CMD set -e && \
     php -r "if (!getenv('DATABASE_URL')) { echo 'DATABASE_URL environment variable is not set'; exit(1); }" && \
+    composer install --no-interaction --prefer-dist --optimize-autoloader && \
     sleep 2 && \
-    #rm -rf migrations/*.php && \
-    #php bin/console doctrine:database:drop --force --if-exists && \
-#    PGPASSWORD=admin psql -h postgres -U admin -tc "SELECT 1 FROM pg_database WHERE datname = 'mydatabase'" | grep -q 1 || \
-#    (PGPASSWORD=admin psql -h postgres -U admin -c "DROP DATABASE IF EXISTS mydatabase" && \
-#    PGPASSWORD=admin psql -h postgres -U admin -c "CREATE DATABASE mydatabase") && \
     php bin/console doctrine:database:create --if-not-exists && \
     php bin/console doctrine:schema:update --force && \
     php bin/console make:migration --no-interaction && \

@@ -36,7 +36,7 @@ class CharacterController extends AbstractController
         $form = $this->createForm(CharacterType::class, $character);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             /** @var UploadedFile $pictureFile */
             $pictureFile = $form->get('picture')->getData();
             if ($pictureFile) {
